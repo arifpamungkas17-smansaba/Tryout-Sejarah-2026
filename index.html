@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi TKA Online Sejarah Kelas XII - SMAN 1 Baturetno</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#1d4ed8',
+                            600: '#1e40af',
+                            700: '#1d3557',
+                            800: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col">
+
+    <!-- HEADER GLOBAL -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg border-2 border-white shadow">
+                    <i class="fa-solid font-serif">S</i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm md:text-base leading-tight tracking-wide text-blue-300">SIMULASI TKA ONLINE SEJARAH KELAS XII</h1>
+                    <p class="text-xs text-slate-400">SMAN 1 Baturetno - Tahun Ajaran 2025/2026</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 bg-slate-800 p-1 rounded-lg border border-slate-700">
+                <button id="nav-siswa-btn" onclick="switchPortal('siswa')" class="px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 bg-blue-600 text-white shadow">
+                    <i class="fa-solid fa-user-graduate mr-1"></i> Portal Siswa
+                </button>
+                <button id="nav-guru-btn" onclick="switchPortal('guru')" class="px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-user-tie mr-1"></i> Portal Guru
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTAINER UTAMA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- ==================== PORTAL SISWA ==================== -->
+        <section id="portal-siswa" class="space-y-6">
+
+            <!-- VIEW 1: FORM LOGIN / KONFIRMASI -->
+            <div id="siswa-login-card" class="max-w-md mx-auto bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden mt-6">
+                <div class="bg-blue-700 p-6 text-white text-center">
+                    <div class="inline-block p-3 bg-white/10 rounded-full mb-2">
+                        <i class="fa-solid fa-graduation-cap text-3xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">Konfirmasi Data Peserta</h2>
+                    <p class="text-xs text-blue-200 mt-1">Silakan isi data diri dan kode token ujian dengan benar</p>
+                </div>
+                <form id="form-login-siswa" onsubmit="handleStartExam(event)" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap Peserta</label>
+                        <input type="text" id="input-nama" required placeholder="Contoh: Ahmad Dahlan" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">NISN</label>
+                            <input type="text" id="input-nisn" required placeholder="1234567890" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kelas</label>
+                            <select id="input-kelas" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option value="">-- Pilih --</option>
+                                <option value="XII IPS 1">XII IPS 1</option>
+                                <option value="XII IPS 2">XII IPS 2</option>
+                                <option value="XII IPS 3">XII IPS 3</option>
+                                <option value="XII MIPA 1">XII MIPA 1</option>
+                                <option value="XII MIPA 2">XII MIPA 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kode Token Ujian</label>
+                        <div class="relative">
+                            <input type="text" id="input-token" required placeholder="TKA2026" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none tracking-widest font-mono uppercase">
+                            <span class="absolute right-3 top-2.5 text-xs text-slate-400">(Default: TKA2026)</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg text-sm shadow transition duration-200 mt-2 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> MULAI UJIAN SEKARANG
+                    </button>
+                </form>
+            </div>
+
+            <!-- VIEW 2: ANTARMUKA UJIAN (CBT) -->
+            <div id="siswa-exam-interface" class="hidden space-y-4">
+                <!-- Header Status Ujian & Timer -->
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-blue-100 text-blue-700 p-2.5 rounded-lg">
+                            <i class="fa-solid fa-id-card text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Peserta Ujian:</div>
+                            <div id="exam-user-name" class="font-bold text-slate-800 text-sm md:text-base">Ahmad Dahlan</div>
+                            <div id="exam-user-meta" class="text-xs text-slate-500">NISN: 12345678 | XII IPS 1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-right">
+                            <div class="text-xs font-bold text-amber-700 uppercase">Sisa Waktu</div>
+                            <div id="timer-display" class="font-mono text-xl md:text-2xl font-bold text-amber-600">60:00</div>
+                        </div>
+                        <button onclick="confirmFinishExam()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-lg text-sm shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle"></i> <span class="hidden md:inline">Selesaikan Ujian</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Grid Layout Soal & Navigasi -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Panel Kiri: Soal & Jawaban (3 Cols) -->
+                    <div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between min-h-[500px]">
+                        <div>
+                            <!-- Header Soal -->
+                            <div class="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
+                                <span class="text-sm font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Soal No. <span id="current-q-num">1</span></span>
+                                <span id="question-type-badge" class="text-xs font-medium bg-slate-100 text-slate-600 px-2.5 py-1 rounded">Pilihan Ganda</span>
+                            </div>
+
+                            <!-- Teks Soal -->
+                            <div id="question-text" class="text-slate-800 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                                Loading soal...
+                            </div>
+
+                            <!-- Container Opsi / Input Jawaban -->
+                            <div id="options-container" class="space-y-3 mb-6">
+                                <!-- Dynamic Options Rendered Here -->
+                            </div>
+                        </div>
+
+                        <!-- Footer Navigasi Soal -->
+                        <div class="pt-4 border-t border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                            <button id="btn-prev" onclick="navigateQuestion(-1)" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-sm font-semibold transition disabled:opacity-50">
+                                <i class="fa-solid fa-chevron-left mr-1"></i> Sebelum
+                            </button>
+
+                            <label class="flex items-center space-x-2 bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded-lg cursor-pointer text-sm font-semibold transition">
+                                <input type="checkbox" id="checkbox-ragu" onchange="toggleRaguRagu()" class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                <span>Ragu-Ragu</span>
+                            </label>
+
+                            <button id="btn-next" onclick="navigateQuestion(1)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition">
+                                Berikut <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel Kanan: Navigasi Nomor Soal Grid (1 Col) -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                        <h3 class="text-xs font-bold uppercase text-slate-500 mb-3 tracking-wider">Navigasi Nomor Soal</h3>
+                        
+                        <!-- Grid Tombol Nomor -->
+                        <div id="question-grid" class="grid grid-cols-5 gap-2 max-h-[360px] overflow-y-auto custom-scrollbar p-1">
+                            <!-- Dynamic Buttons -->
+                        </div>
+
+                        <!-- Legend Warna -->
+                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-blue-600 rounded"></span>
+                                <span>Sudah Dijawab</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-amber-400 rounded"></span>
+                                <span>Ragu-Ragu</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-slate-200 rounded"></span>
+                                <span>Belum Dijawab</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: HASIL & EVALUASI -->
+            <div id="siswa-result-card" class="hidden max-w-2xl mx-auto bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden my-6">
+                <div class="bg-emerald-600 p-6 text-white text-center">
+                    <div class="inline-block p-3 bg-white/20 rounded-full mb-2">
+                        <i class="fa-solid fa-trophy text-4xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold">Ujian Selesai!</h2>
+                    <p class="text-emerald-100 text-sm mt-1">Hasil Rekapitulasi Nilai TKA Sejarah Kelas XII</p>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Skor Summary -->
+                    <div class="grid grid-cols-3 gap-4 text-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold uppercase">Nilai Akhir</div>
+                            <div id="result-score" class="text-3xl font-extrabold text-blue-700">0</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold uppercase">Jawaban Benar</div>
+                            <div id="result-correct" class="text-3xl font-extrabold text-emerald-600">0</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold uppercase">Total Soal</div>
+                            <div id="result-total" class="text-3xl font-extrabold text-slate-700">20</div>
+                        </div>
+                    </div>
+
+                    <!-- Details Siswa -->
+                    <div class="text-sm space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <div><span class="font-semibold">Nama:</span> <span id="res-nama">-</span></div>
+                        <div><span class="font-semibold">NISN:</span> <span id="res-nisn">-</span></div>
+                        <div><span class="font-semibold">Kelas:</span> <span id="res-kelas">-</span></div>
+                        <div><span class="font-semibold">Waktu Selesai:</span> <span id="res-waktu">-</span></div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="pt-2">
+                        <button onclick="restartExamSession()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg text-sm transition">
+                            <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Kembali ke Halaman Depan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== PORTAL GURU ==================== -->
+        <section id="portal-guru" class="hidden space-y-6">
+
+            <!-- ADMIN AUTH LOCK -->
+            <div id="guru-auth-card" class="max-w-md mx-auto bg-white rounded-xl shadow-md border border-slate-200 p-6 my-10">
+                <div class="text-center mb-4">
+                    <div class="inline-block p-3 bg-slate-100 rounded-full text-slate-700 mb-2">
+                        <i class="fa-solid fa-lock text-2xl"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Akses Portal Guru</h2>
+                    <p class="text-xs text-slate-500">Masukkan PIN Admin untuk mengelola bank soal dan melihat hasil</p>
+                </div>
+                <form onsubmit="handleGuruAuth(event)" class="space-y-4">
+                    <div>
+                        <input type="password" id="input-pin" required placeholder="PIN Admin (Default: baturetno123)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-center tracking-widest focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-lg text-sm transition">
+                        Buka Portal
+                    </button>
+                </form>
+            </div>
+
+            <!-- MAIN GURU DASHBOARD -->
+            <div id="guru-dashboard" class="hidden space-y-6">
+                
+                <!-- Nav Tabs Guru -->
+                <div class="flex space-x-2 border-b border-slate-200 pb-2">
+                    <button id="tab-btn-hasil" onclick="switchGuruTab('hasil')" class="px-4 py-2 font-bold text-sm rounded-lg bg-blue-700 text-white shadow">
+                        <i class="fa-solid fa-table-list mr-1"></i> Hasil Ujian Siswa
+                    </button>
+                    <button id="tab-btn-soal" onclick="switchGuruTab('soal')" class="px-4 py-2 font-bold text-sm rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300">
+                        <i class="fa-solid fa-database mr-1"></i> Kelola Bank Soal (<span id="total-soal-count">20</span>)
+                    </button>
+                </div>
+
+                <!-- TAB 1: HASIL SISWA -->
+                <div id="guru-tab-hasil" class="space-y-4">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Rekapitulasi Nilai Siswa</h3>
+                            <p class="text-xs text-slate-500">Data tersimpan di localStorage browser ini</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="exportHasilToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-lg text-xs md:text-sm shadow flex items-center gap-1">
+                                <i class="fa-solid fa-file-excel"></i> Export CSV / Excel
+                            </button>
+                            <button onclick="clearHasilSiswa()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-2 rounded-lg text-xs md:text-sm shadow flex items-center gap-1">
+                                <i class="fa-solid fa-trash"></i> Hapus Rekap
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Hasil -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold text-xs uppercase">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Nama Siswa</th>
+                                    <th class="p-3">NISN</th>
+                                    <th class="p-3">Kelas</th>
+                                    <th class="p-3">Waktu Selesai</th>
+                                    <th class="p-3 text-center">Skor Akhir</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-hasil-body" class="divide-y divide-slate-100">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: BANK SOAL EDITOR -->
+                <div id="guru-tab-soal" class="hidden space-y-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Daftar Soal Simulasi Sejarah TKA</h3>
+                            <p class="text-xs text-slate-500">Soal bawaan sesuai standar instrumen TKA 2026</p>
+                        </div>
+                        <button onclick="resetBankSoalDefault()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-2 rounded-lg text-xs md:text-sm shadow">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Reset Soal Default
+                        </button>
+                    </div>
+
+                    <!-- List Soal Admin -->
+                    <div id="bank-soal-list" class="space-y-4">
+                        <!-- Dynamic Question Cards -->
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 Tim Penilaian TKA SMAN 1 Baturetno. Siap Deploy untuk GitHub Pages.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // 1. DATA BANK SOAL DEFAULT (20 SOAL LENGKAP)
+        // ==========================================
+        const DEFAULT_BANK_SOAL = [
+            {
+                id: 1,
+                type: "PG",
+                question: "Pada tanggal 17 Agustus 1945, Proklamasi Kemerdekaan Indonesia dikumandangkan di Jalan Pegangsaan Timur No. 56, Jakarta. Di saat bersamaan, kondisi sosial-politik masyarakat Jakarta diwarnai oleh ketegangan antara kelompok pemuda dan golongan tua, kebingungan pihak militer Jepang pasca-menyerah kepada Sekutu, serta lonjakan semangat kebangsaan rakyat yang berkumpul di luar rumah Soekarno.<br><br>Berdasarkan deskripsi tersebut, manakah pernyataan yang sesuai dengan cara berpikir sejarah sinkronik?",
+                options: [
+                    "Perkembangan perjuangan pergerakan nasional Indonesia sejak awal abad ke-20 hingga dicapainya Proklamasi Kemerdekaan.",
+                    "Gambaran situasi sosial, politik, dan psikologis masyarakat di Jakarta pada saat peristiwa Proklamasi Kemerdekaan berlangsung.",
+                    "Urutan kronologis peristiwa Rengasdengklok hingga pembacaan teks Proklamasi Kemerdekaan oleh Soekarno-Hatta.",
+                    "Proses perubahan bentuk pemerintahan Indonesia dari masa pendudukan militer Jepang menuju negara merdeka.",
+                    "Dampak kekalahan Jepang dalam Perang Pasifik terhadap peta politik di negara-negara kawasan Asia Tenggara."
+                ],
+                key: 1 // index B
+            },
+            {
+                id: 2,
+                type: "MCMA",
+                question: "Kerajaan Samudera Pasai berkembang menjadi pusat perdagangan maritim yang sangat penting di kawasan Selat Malaka pada abad ke-13 hingga ke-14 Masehi. Faktor-faktor apa sajakah yang memengaruhi perkembangan ekonomi Kerajaan Samudera Pasai tersebut?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "Letak geografis yang strategis di pintu masuk Selat Malaka sebagai jalur pelayaran internasional.",
+                    "Komoditas ekspor utama berupa lada yang sangat diminati oleh para pedagang asing.",
+                    "Penerapan mata uang emas (Deureuham) sebagai alat pembayaran sah dalam transaksi perdagangan.",
+                    "Keruntuhan Kerajaan Majapahit yang membuat seluruh pusat perdagangan dunia berpindah ke Pasai.",
+                    "Kebijakan penutupan pelabuhan bagi kapal-kapal dagang yang berasal dari Tiongkok dan India."
+                ],
+                key: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 3,
+                type: "MCMA",
+                question: "Kesultanan Aceh Darussalam mengalami puncak kejayaan pada masa pemerintahan Sultan Iskandar Muda dan berperan penting dalam jaringan perdagangan rempah-rempah internasional. Apa saja faktor yang membuat Kesultanan Aceh Darussalam memiliki peran penting dalam bidang ekonomi internasional?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "Jatuhnya Malaka ke tangan Portugis pada tahun 1511 mendorong para pedagang Muslim mengalihkan rute dagang ke Aceh.",
+                    "Aceh menguasai wilayah-wilayah strategis penghasil lada di Sumatera Barat dan Semenanjung Malaya.",
+                    "Aceh menjalin hubungan diplomatik dan perdagangan internasional dengan Kerajaan Turki Usmani, India, dan Tiongkok.",
+                    "Kesultanan Aceh melarang seluruh kegiatan ekspor rempah-rempah ke kawasan Eropa dan Asia Barat.",
+                    "Aceh menerapkan sistem tarif pajak yang sangat tinggi bagi kapal-kapal pedagang pribumi Nusantara."
+                ],
+                key: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 4,
+                type: "PG",
+                question: "Pada tahun 1511, Portugis di bawah pimpinan Alfonso de Albuquerque berhasil menaklukkan Malaka. Selanjutnya, Portugis mengirimkan armada pelayaran ke timur di bawah pimpinan Antonio de Abreu dan Francisco Serrão hingga tiba di Kepulauan Maluku pada tahun 1512. Apakah tujuan utama ekspedisi Bangsa Portugis datang ke Kepulauan Maluku?",
+                options: [
+                    "Menguasai secara langsung daerah sumber utama penghasil rempah-rempah seperti pala dan cengkeh.",
+                    "Menjalin aliansi militer dengan Kerajaan Majapahit untuk menghadapi persaingan pedagang Arab.",
+                    "Menyebarkan paham merkantilisme ke seluruh wilayah pedalaman di Kepulauan Nusantara.",
+                    "Membuka rute pelayaran baru menuju Benua Amerika melalui lintasan Samudra Pasifik.",
+                    "Melakukan studi etnografi mengenai kebudayaan masyarakat Kepulauan Nusantara bagian timur."
+                ],
+                key: 0 // A
+            },
+            {
+                id: 5,
+                type: "PG",
+                question: "Pada Februari 1945, timbul perlawanan prajurit PETA (Pembela Tanah Air) di Blitar yang dipimpin oleh Supriyadi menghadapi tentara pendudukan militer Jepang. Apakah yang menjadi alasan utama perlawanan prajurit PETA di Blitar terhadap pihak Jepang?",
+                options: [
+                    "Penolakan terhadap perintah menjalankan ritual Seikerei setiap pagi.",
+                    "Keprihatinan atas penderitaan rakyat akibat praktik Romusha dan penyitaan hasil pertanian.",
+                    "Kecewa atas pembubaran secara sepihak organisasi militer PETA oleh pemerintah Jepang.",
+                    "Pembentukan lembaga ekonomi desa Kumiai yang merugikan para pedagang lokal.",
+                    "Penolakan terhadap penetapan hari raya ulang tahun Kaisar Jepang (Tencosetsu)."
+                ],
+                key: 1 // B
+            },
+            {
+                id: 6,
+                type: "MCMA",
+                question: "R.A. Kartini merupakan tokoh pergerakan wanita yang memperjuangkan emansipasi melalui tulisan-tulisan nya. Ia menekankan pentingnya pendidikan, kesetaraan hak, dan pemikiran kritis bagi perempuan agar mampu berkontribusi dalam pembangunan masyarakat. Manakah pernyataan berikut yang mencerminkan gagasan perjuangan R.A. Kartini dan masih relevan untuk kehidupan masa kini?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "Mendorong akses pendidikan seluas-luasnya dan setara bagi perempuan di seluruh tingkatan.",
+                    "Mengembangkan kepemimpinan serta partisipasi aktif perempuan di bidang profesional dan publik.",
+                    "Mencegah terjadinya praktik diskriminasi berbasis gender dalam dunia kerja dan masyarakat.",
+                    "Mengabaikan nilai budaya lokal demi menerapkan secara mutlak gaya hidup masyarakat Barat.",
+                    "Membatasi peran perempuan hanya pada sektor domestik rumah tangga untuk menjaga tradisi."
+                ],
+                key: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 7,
+                type: "KATEGORI",
+                question: "Peralihan kekuasaan politik dari Presiden Soekarno kepada Letjen Soeharto diwarnai oleh berbagai dinamika politik dan ketatanegaraan pasca-peristiwa G30S/PKI. Tentukan Benar atau Salah untuk setiap pernyataan mengenai titik awal lahirnya Orde Baru berikut!",
+                statements: [
+                    "Penolakan pidato pertanggungjawaban Presiden Soekarno (Nawaksara) oleh MPRS pada tahun 1967.",
+                    "Penetapan Ketetapan MPRS No. IX/MPRS/1966 yang mengesahkan Surat Perintah 11 Maret (Supersemar).",
+                    "Pengangkatan Soeharto secara langsung sebagai Presiden seumur hidup oleh Soekarno."
+                ],
+                key: [true, true, false] // Benar, Benar, Salah
+            },
+            {
+                id: 8,
+                type: "PG",
+                question: "Ibnu Khaldun merumuskan bahwa sejarah bukan hanya sekadar catatan kronologis tentang peristiwa masa lalu atau pergantian kekuasaan, melainkan kajian ilmiah tentang peradaban manusia, Perubahan sosial, serta hukum sebab-akibat yang memengaruhi dinamika masyarakat.<br><br>Apakah fokus utama pengertian sejarah menurut pendapat tersebut?",
+                options: [
+                    "Dokumentasi silsilah raja-raja dan bangsawan secara kronologis murni.",
+                    "Kajian analitis atas perkembangan peradaban, hukum kausalitas, dan perubahan sosial masyarakat.",
+                    "Hasil imajinasi sastra pujangga keraton dalam merekonstruksi mitos-mitos lokal.",
+                    "Pengulangan peristiwa politik secara siklis yang tidak dapat diubah oleh manusia.",
+                    "Cerita fiktif rakyat yang diturunkan secara lisan dari generasi ke generasi."
+                ],
+                key: 1 // B
+            },
+            {
+                id: 9,
+                type: "PG",
+                question: "Dalam meneliti peristiwa Perjanjian Linggarjati tahun 1946, seorang siswa membaca naskah asli perjanjian yang ditandatangani oleh Sutan Sjahrir dan Wim Schermerhorn serta membaca buku analisis historiografi tulisan sejarawan yang diterbitkan pada tahun 2021.<br><br>Bagaimana perbedaan karakteristik antara dua bahan yang digunakan siswa tersebut?",
+                options: [
+                    "Keduanya merupakan sumber primer karena sama-sama membahas substansi perjanjian diplomatik secara mendetail.",
+                    "Naskah asli merupakan sumber sekunder, sedangkan buku sejarah karangan sejarawan merupakan sumber primer.",
+                    "Naskah asli merekam fakta sejarah secara langsung pada saat peristiwa terjadi (sumber primer), sedangkan buku berisi interpretasi dan analisis retrospektif sejarawan (sumber sekunder).",
+                    "Buku karangan sejarawan lebih akurat daripada naskah asli karena ditulis tanpa ada tekanan politik pihak luar.",
+                    "Naskah asli tidak memiliki bobot historis ilmiah karena hanya merupakan dokumen administratif pemerintah."
+                ],
+                key: 2 // C
+            },
+            {
+                id: 10,
+                type: "PG",
+                question: "Candi Borobudur memiliki relief yang memuat gambaran kehidupan masyarakat Jawa Kuno. Salah satu panil relief memperlihatkan perahu bercadik khas Nusantara yang sedang mengarungi lautan lengkap dengan awak kapal dan barang muatan.<br><br>Apakah penggambaran yang tepat dari relief perahu bercadik tersebut tentang kehidupan masyarakat Mataram Kuno?",
+                options: [
+                    "Masyarakat Mataram Kuno telah memiliki keahlian maritim yang tinggi dan aktif dalam pelayaran serta perdagangan antarpulau/antarnegara.",
+                    "Masyarakat Mataram Kuno hanya mengandalkan sektor pertanian dan belum mengenal teknologi transportasi air.",
+                    "Kapal bercadik pada relief merupakan simbol murni keagamaan yang tidak mencerminkan realitas aktivitas ekonomi.",
+                    "Teknologi pembuatan kapal pada masa Mataram Kuno sepenuhnya berasal dari hasil impor pedagang Eropa.",
+                    "Pelayaran samudra pada masa itu hanya diperbolehkan untuk kaum bangsawan yang hendak berziarah ke India."
+                ],
+                key: 0 // A
+            },
+            {
+                id: 11,
+                type: "PG",
+                question: "Teori Mekkah yang didukung oleh Prof. Dr. Hamka menyatakan bahwa agama Islam masuk ke Nusantara berasal langsung dari wilayah Arab (Mekkah/Madinah) pada abad ke-7 Masehi (abad ke-1 Hijriah). Bukti sejarah apakah yang mendukung keberadaan Teori Mekkah tersebut?",
+                options: [
+                    "Penemuan makam Fatimah binti Maimun di Gresik yang bertarikh tahun 1082 Masehi.",
+                    "Bukti perkampungan pedagang Arab di kawasan pesisir Barus, Sumatera Utara pada abad ke-7 Masehi.",
+                    "Bentuk dan ornamen batu nisan Sultan Malik Al-Saleh di Samudera Pasai yang mirip dengan batu nisan di Cambay, Gujarat.",
+                    "Kesamaan tradisi peringatan 10 Muharram (Asyura) antara masyarakat Indonesia dengan masyarakat Persia.",
+                    "Penggunaan bentuk tulisan huruf Pallawa dalam naskah-naskah keagamaan Islam kuno di Jawa."
+                ],
+                key: 1 // B
+            },
+            {
+                id: 12,
+                type: "PG",
+                question: "Berdirinya Budi Utomo pada 20 Mei 1908 menjadi titik awal pergerakan nasional di Indonesia. Sebelum tahun 1908, perlawanan rakyat Indonesia menentang penjajah umumnya bersifat kedaerahan dan dipimpin oleh tokoh karismatik, sedangkan sesudahnya perjuangan dilakukan secara modern melalui organisasi politik, perhimpunan, dan gagasan kebangsaan.<br><br>Berdasarkan informasi di atas, bagaimanakah perbandingan pola perjuangan masyarakat sebelum dan sesudah lahirnya Budi Utomo?",
+                options: [
+                    "Sebelum 1908 perjuangan bersifat nasional terorganisasi, sedangkan sesudah 1908 kembali bersifat kedaerahan.",
+                    "Sebelum 1908 perlawanan bersifat kedaerahan dan bergantung pada pimpinan, sedangkan sesudah 1908 perjuangan terorganisasi secara modern dengan visi nasional.",
+                    "Sebelum 1908 masyarakat berjuang menggunakan jalur diplomasi internasional, sedangkan sesudah 1908 mengandalkan perang gerilya semata.",
+                    "Sebelum 1908 perlawanan dipimpin oleh kaum terpelajar urban, sedangkan sesudah 1908 dipimpin oleh raja-raja lokal.",
+                    "Tidak ada perbedaan signifikan dalam strategi perlawanan sebelum dan sesudah tahun 1908."
+                ],
+                key: 1 // B
+            },
+            {
+                id: 13,
+                type: "MCMA",
+                question: "Perang Makassar (1666–1669) yang melibatkan Kesultanan Gowa-Tallo menghadapi aliansi VOC dan Arung Palakka diakhiri dengan ditandatanganinya Perjanjian Bongaya pada tahun 1667. Bagaimanakah pengaruh peristiwa tersebut terhadap kehidupan politik dan ekonomi di kawasan Nusantara?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "VOC berhasil memonopoli perdagangan rempah-rempah di kawasan pelabuhan Makassar.",
+                    "Kesultanan Gowa-Tallo harus menutup pelabuhannya bagi kapal-kapal pedagang Eropa selain VOC.",
+                    "Banyak pelaut dan pedagang Bugis-Makassar yang migrasi ke berbagai daerah di Nusantara seperti Riau, Jawa, dan Kalimantan.",
+                    "Kesultanan Gowa-Tallo mendapatkan hak menguasai seluruh perdagangan rempah di Kepulauan Maluku.",
+                    "Kerajaan Bone dihapuskan secara permanen dari peta politik Sulawesi Selatan."
+                ],
+                key: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 14,
+                type: "KATEGORI",
+                question: "Prasasti Tugu yang ditemukan di Cilincing, Jakarta Utara, menyebutkan penggalian Saluran Chandrabhaga dan Saluran Gomati sepanjang 6.122 tombak di bawah pemerintahan Raja Purnawarman dari Kerajaan Tarumanagara. Berdasarkan informasi tersebut, tentukan Tepat atau Tidak Tepat untuk setiap pernyataan berikut!",
+                statements: [
+                    "Penggalian saluran air tersebut berfungsi sebagai sarana penanggulangan banjir dan irigasi pertanian.",
+                    "Kerajaan Tarumanagara telah memiliki sistem pengorganisasian masyarakat dan tata kelola air yang maju.",
+                    "Prasasti Tugu menandai masuknya ajaran Islam pertama kali di pulau Jawa."
+                ],
+                key: [true, true, false] // Tepat, Tepat, Tidak Tepat
+            },
+            {
+                id: 15,
+                type: "PG",
+                question: "Bangsa Portugis melakukan penjelajahan samudra menuju dunia Timur dengan mengelilingi benua Afrika hingga akhirnya tiba di Kepulauan Nusantara.<br><br>Manakah urutan rute pelayaran Bangsa Portugis yang tepat hingga mencapai Malaka dan Maluku?",
+                options: [
+                    "Eropa – Samudra Atlantik – Benua Amerika – Samudra Pasifik – Filipina – Maluku.",
+                    "Eropa – Pantai Barat Afrika – Tanjung Harapan – Pantai Timur Afrika – Goa (India) – Malaka – Maluku.",
+                    "Eropa – Laut Tengah – Terusan Suez – Laut Merah – Samudra Hindia – Malaka.",
+                    "Eropa – Pantai Barat Afrika – Tanjung Harapan – Australia – Laut Arafura – Maluku.",
+                    "Eropa – Samudra Atlantik – Semenanjung Horn – Samudra Pasifik – Maluku."
+                ],
+                key: 1 // B
+            },
+            {
+                id: 16,
+                type: "KATEGORI",
+                question: "Walisongo menyebarkan agama Islam di Jawa dengan menggunakan pendekatan akulturasi budaya tanpa menghapus tradisi lokal masyarakat secara mendadak. Tentukan Tepat atau Tidak Tepat untuk setiap fakta jejak budaya Islam berikut!",
+                statements: [
+                    "Menara Masjid Kudus dibangun dengan mengadopsi bentuk arsitektur candi Hindu-Jawa.",
+                    "Pelaksanaan tradisi Sekaten di Keraton Yogyakarta dan Surakarta untuk memperingati Maulid Nabi.",
+                    "Penghancuran seluruh bangunan candi peninggalan Hindu-Buddha di pesisir utara Jawa secara total."
+                ],
+                key: [true, true, false] // Tepat, Tepat, Tidak Tepat
+            },
+            {
+                id: 17,
+                type: "PG",
+                question: "Penerapan Sistem Tanam Paksa (Cultuurstelsel) yang digagas oleh Gubernur Jenderal Johannes van den Bosch pada tahun 1830 mewajibkan rakyat pribumi menanam tanaman komoditas ekspor.<br><br>Apakah dampak sosial-ekonomi yang dirasakan oleh rakyat petani di Jawa akibat penyimpangan pelaksanaan Tanam Paksa tersebut?",
+                options: [
+                    "Terjadinya bahaya kelaparan dan wabah penyakit di daerah Cirebon dan Demak karena lahan padi terabaikan.",
+                    "Meningkatnya kesejahteraan petani secara signifikan dari pembayaran plantenloong (upah tanam).",
+                    "Beralihnya status kepemilikan tanah secara merata kepada seluruh kaum tani pribumi.",
+                    "Penghapusan peran birokrasi tradisional (priyayi) dalam pemungutan hasil bumi.",
+                    "Petani Jawa berubah menjadi pengusaha perkebunan swasta yang mandiri."
+                ],
+                key: 0 // A
+            },
+            {
+                id: 18,
+                type: "MCMA",
+                question: "Perang Jawa (1825–1830) yang dipimpin oleh Pangeran Diponegoro merupakan salah satu perlawanan terbesar terhadap pemerintah kolonial Belanda. Strategi dan karakteristik perlawanan apa sajakah yang diterapkan oleh Pangeran Diponegoro dalam perang tersebut?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "Menerapkan taktik perang gerilya dengan memanfaatkan kondisi alam perbukitan dan hutan.",
+                    "Membagi wilayah perjuangan ke dalam beberapa sistem pertahanan di bawah para panglima perang.",
+                    "Menggunakan nilai keagamaan dan moral untuk menggalang dukungan luas dari rakyat perdesaan.",
+                    "Membentuk aliansi militer secara terbuka dengan pasukan Inggris yang berada di Singapura.",
+                    "Menggunakan perjuangan diplomasi melalui lembaga perwakilan rakyat Volksraad."
+                ],
+                key: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 19,
+                type: "KATEGORI",
+                question: "Pemerintah pendudukan militer Jepang menerapkan berbagai kebijakan ketat di Indonesia untuk mendukung kepentingan Perang Pasifik. Tentukan Benar atau Salah untuk setiap karakteristik kebijakan Jepang berikut!",
+                statements: [
+                    "Memobilisasi tenaga rakyat secara paksa melalui program Romusha untuk proyek militer.",
+                    "Membentuk organisasi pemuda dan militer/semimiliter seperti PETA, Heiho, dan Seinendan.",
+                    "Membebaskan penggunaan Bahasa Belanda dan melarang penggunaan Bahasa Indonesia."
+                ],
+                key: [true, true, false] // Benar, Benar, Salah
+            },
+            {
+                id: 20,
+                type: "MCMA",
+                question: "Dalam mempertahankan kemerdekaan pasca-1945, Bangsa Indonesia mengombinasikan perjuangan fisik (senjata) dan perjuangan diplomasi politik di forum internasional. Manakah di antara peristiwa berikut yang merupakan bentuk perjuangan diplomasi Indonesia untuk memperoleh pengakuan kedaulatan?<br><i>(Pilih semua jawaban yang benar!)</i>",
+                options: [
+                    "Perundingan Linggarjati (1947)",
+                    "Perundingan Renville (1948)",
+                    "Konferensi Meja Bundar / KMB (1949)",
+                    "Pertempuran Surabaya 10 November 1945",
+                    "Pertempuran Ambarawa 15 Desember 1945"
+                ],
+                key: [0, 1, 2] // A, B, C
+            }
+        ];
+
+        // ==========================================
+        // 2. STATE APLIKASI
+        // ==========================================
+        let bankSoal = [];
+        let currentQuestionIdx = 0;
+        let userAnswers = {}; // Format: { questionId: answerData }
+        let raguState = {};    // Format: { questionId: boolean }
+        let timerInterval = null;
+        let timeRemaining = 60 * 60; // 60 Menit
+        let currentUser = null;
+
+        // ==========================================
+        // 3. INISIALISASI & LOCALSTORAGE
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            initBankSoal();
+            checkExamSession();
+            renderGuruDashboard();
+        });
+
+        function initBankSoal() {
+            const stored = localStorage.getItem("tka_bank_soal");
+            if (stored) {
+                try {
+                    bankSoal = JSON.parse(stored);
+                } catch (e) {
+                    bankSoal = DEFAULT_BANK_SOAL;
+                }
+            } else {
+                bankSoal = DEFAULT_BANK_SOAL;
+                localStorage.setItem("tka_bank_soal", JSON.stringify(DEFAULT_BANK_SOAL));
+            }
+            document.getElementById("total-soal-count").innerText = bankSoal.length;
+        }
+
+        function switchPortal(portal) {
+            const siswaBtn = document.getElementById("nav-siswa-btn");
+            const guruBtn = document.getElementById("nav-guru-btn");
+            const portalSiswa = document.getElementById("portal-siswa");
+            const portalGuru = document.getElementById("portal-guru");
+
+            if (portal === 'siswa') {
+                siswaBtn.className = "px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 bg-blue-600 text-white shadow";
+                guruBtn.className = "px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 text-slate-300 hover:text-white";
+                portalSiswa.classList.remove("hidden");
+                portalGuru.classList.add("hidden");
+            } else {
+                guruBtn.className = "px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 bg-blue-600 text-white shadow";
+                siswaBtn.className = "px-3 py-1.5 text-xs md:text-sm font-semibold rounded-md transition-all duration-200 text-slate-300 hover:text-white";
+                portalGuru.classList.remove("hidden");
+                portalSiswa.classList.add("hidden");
+            }
+        }
+
+        // ==========================================
+        // 4. PORTAL SISWA LOGIC
+        // ==========================================
+        function handleStartExam(e) {
+            e.preventDefault();
+            const nama = document.getElementById("input-nama").value.trim();
+            const nisn = document.getElementById("input-nisn").value.trim();
+            const kelas = document.getElementById("input-kelas").value;
+            const token = document.getElementById("input-token").value.trim();
+
+            if (token.toUpperCase() !== "TKA2026") {
+                alert("Kode Token Ujian Salah! Silakan tanyakan token resmi ke pengawas.");
+                return;
+            }
+
+            currentUser = {
+                nama,
+                nisn,
+                kelas,
+                startTime: new Date().getTime()
+            };
+
+            userAnswers = {};
+            raguState = {};
+            timeRemaining = 60 * 60; // 60 menit
+
+            saveExamSession();
+            startExamUI();
+        }
+
+        function saveExamSession() {
+            const sessionData = {
+                user: currentUser,
+                userAnswers: userAnswers,
+                raguState: raguState,
+                timeRemaining: timeRemaining,
+                currentQuestionIdx: currentQuestionIdx
+            };
+            localStorage.setItem("tka_active_session", JSON.stringify(sessionData));
+        }
+
+        function checkExamSession() {
+            const activeSession = localStorage.getItem("tka_active_session");
+            if (activeSession) {
+                try {
+                    const parsed = JSON.parse(activeSession);
+                    // Hitung sisa waktu berdasarkan waktu berlangsung
+                    const now = new Date().getTime();
+                    const elapsedSecs = Math.floor((now - parsed.user.startTime) / 1000);
+                    const remaining = (60 * 60) - elapsedSecs;
+
+                    if (remaining > 0) {
+                        currentUser = parsed.user;
+                        userAnswers = parsed.userAnswers || {};
+                        raguState = parsed.raguState || {};
+                        timeRemaining = remaining;
+                        currentQuestionIdx = parsed.currentQuestionIdx || 0;
+                        startExamUI();
+                        return;
+                    } else {
+                        // Sesi kadaluarsa
+                        localStorage.removeItem("tka_active_session");
+                    }
+                } catch (e) {
+                    localStorage.removeItem("tka_active_session");
+                }
+            }
+        }
+
+        function startExamUI() {
+            document.getElementById("siswa-login-card").classList.add("hidden");
+            document.getElementById("siswa-result-card").classList.add("hidden");
+            document.getElementById("siswa-exam-interface").classList.remove("hidden");
+
+            document.getElementById("exam-user-name").innerText = currentUser.nama;
+            document.getElementById("exam-user-meta").innerText = `NISN: ${currentUser.nisn} | ${currentUser.kelas}`;
+
+            renderQuestionGrid();
+            renderQuestion(currentQuestionIdx);
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                // Simpan periodik sisa waktu
+                if (currentUser) {
+                    saveExamSession();
+                }
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu Ujian telah habis! Jawaban Anda akan otomatis dikirim.");
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            const text = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById("timer-display").innerText = text;
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById("question-grid");
+            grid.innerHTML = "";
+
+            bankSoal.forEach((q, idx) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.innerText = idx + 1;
+
+                // Tentukan Warna Button
+                let isAnswered = isQuestionAnswered(q.id);
+                let isRagu = raguState[q.id];
+
+                let bgClass = "bg-slate-200 text-slate-700 hover:bg-slate-300";
+                if (isRagu) {
+                    bgClass = "bg-amber-400 text-white font-bold";
+                } else if (isAnswered) {
+                    bgClass = "bg-blue-600 text-white font-bold";
+                }
+
+                if (idx === currentQuestionIdx) {
+                    bgClass += " ring-2 ring-offset-1 ring-blue-800 font-extrabold";
+                }
+
+                btn.className = `h-9 w-full rounded text-xs transition flex items-center justify-center ${bgClass}`;
+                btn.onclick = () => {
+                    currentQuestionIdx = idx;
+                    renderQuestion(idx);
+                    renderQuestionGrid();
+                };
+
+                grid.appendChild(btn);
+            });
+        }
+
+        function isQuestionAnswered(qId) {
+            const ans = userAnswers[qId];
+            if (ans === undefined || ans === null) return false;
+            if (Array.isArray(ans)) return ans.length > 0;
+            if (typeof ans === 'object') {
+                return Object.keys(ans).length > 0;
+            }
+            return true;
+        }
+
+        function renderQuestion(idx) {
+            const q = bankSoal[idx];
+            if (!q) return;
+
+            document.getElementById("current-q-num").innerText = idx + 1;
+            document.getElementById("question-text").innerHTML = q.question;
+
+            // Type Badge
+            const badge = document.getElementById("question-type-badge");
+            if (q.type === 'PG') badge.innerText = "Pilihan Ganda";
+            else if (q.type === 'MCMA') badge.innerText = "Pilihan Ganda Kompleks";
+            else if (q.type === 'KATEGORI') badge.innerText = "Pernyataan Benar/Salah";
+
+            // Ragu-ragu Checkbox
+            document.getElementById("checkbox-ragu").checked = !!raguState[q.id];
+
+            // Render Options Area
+            const container = document.getElementById("options-container");
+            container.innerHTML = "";
+
+            const currentAns = userAnswers[q.id];
+
+            if (q.type === 'PG') {
+                q.options.forEach((opt, optIdx) => {
+                    const label = document.createElement("label");
+                    const isChecked = currentAns === optIdx;
+                    label.className = `flex items-start p-3 border rounded-lg cursor-pointer transition ${
+                        isChecked ? 'border-blue-600 bg-blue-50/50 ring-1 ring-blue-500' : 'border-slate-200 hover:bg-slate-50'
+                    }`;
+                    label.innerHTML = `
+                        <input type="radio" name="opt_pg" ${isChecked ? 'checked' : ''} onchange="saveAnswer(${q.id}, ${optIdx})" class="mt-1 text-blue-600 focus:ring-blue-500 w-4 h-4">
+                        <span class="ml-3 text-sm text-slate-800 leading-snug"><b class="mr-1">${String.fromCharCode(65 + optIdx)}.</b> ${opt}</span>
+                    `;
+                    container.appendChild(label);
+                });
+            } else if (q.type === 'MCMA') {
+                const selectedArr = Array.isArray(currentAns) ? currentAns : [];
+                q.options.forEach((opt, optIdx) => {
+                    const label = document.createElement("label");
+                    const isChecked = selectedArr.includes(optIdx);
+                    label.className = `flex items-start p-3 border rounded-lg cursor-pointer transition ${
+                        isChecked ? 'border-blue-600 bg-blue-50/50 ring-1 ring-blue-500' : 'border-slate-200 hover:bg-slate-50'
+                    }`;
+                    label.innerHTML = `
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleMCMAAnswer(${q.id}, ${optIdx})" class="mt-1 text-blue-600 focus:ring-blue-500 rounded w-4 h-4">
+                        <span class="ml-3 text-sm text-slate-800 leading-snug"><b class="mr-1">${String.fromCharCode(65 + optIdx)}.</b> ${opt}</span>
+                    `;
+                    container.appendChild(label);
+                });
+            } else if (q.type === 'KATEGORI') {
+                const ansObj = currentAns || {};
+                const table = document.createElement("table");
+                table.className = "w-full text-left text-sm border-collapse border border-slate-200 rounded-lg overflow-hidden";
+                table.innerHTML = `
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200">
+                            <th class="p-3 text-slate-700">Pernyataan</th>
+                            <th class="p-3 w-20 text-center text-slate-700">Benar / Tepat</th>
+                            <th class="p-3 w-20 text-center text-slate-700">Salah / Tidak Tepat</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        ${q.statements.map((stmt, sIdx) => {
+                            const val = ansObj[sIdx];
+                            return `
+                                <tr>
+                                    <td class="p-3 text-slate-800 text-xs md:text-sm">${stmt}</td>
+                                    <td class="p-3 text-center">
+                                        <input type="radio" name="kat_${q.id}_${sIdx}" ${val === true ? 'checked' : ''} onchange="saveKategoriAnswer(${q.id},${sIdx}, true)" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                    </td>
+                                    <td class="p-3 text-center">
+                                        <input type="radio" name="kat_${q.id}_${sIdx}" ${val === false ? 'checked' : ''} onchange="saveKategoriAnswer(${q.id},${sIdx}, false)" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                `;
+                container.appendChild(table);
+            }
+
+            // Prev/Next Button State
+            document.getElementById("btn-prev").disabled = (idx === 0);
+            const btnNext = document.getElementById("btn-next");
+            if (idx === bankSoal.length - 1) {
+                btnNext.innerHTML = 'Selesai <i class="fa-solid fa-check ml-1"></i>';
+                btnNext.className = "px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition";
+            } else {
+                btnNext.innerHTML = 'Berikut <i class="fa-solid fa-chevron-right ml-1"></i>';
+                btnNext.className = "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition";
+            }
+        }
+
+        function saveAnswer(qId, val) {
+            userAnswers[qId] = val;
+            saveExamSession();
+            renderQuestionGrid();
+        }
+
+        function toggleMCMAAnswer(qId, optIdx) {
+            let current = userAnswers[qId] || [];
+            if (!Array.isArray(current)) current = [];
+            
+            if (current.includes(optIdx)) {
+                current = current.filter(i => i !== optIdx);
+            } else {
+                current.push(optIdx);
+            }
+            userAnswers[qId] = current;
+            saveExamSession();
+            renderQuestionGrid();
+        }
+
+        function saveKategoriAnswer(qId, stmtIdx, val) {
+            let current = userAnswers[qId] || {};
+            if (typeof current !== 'object' || Array.isArray(current)) current = {};
+            
+            current[stmtIdx] = val;
+            userAnswers[qId] = current;
+            saveExamSession();
+            renderQuestionGrid();
+        }
+
+        function toggleRaguRagu() {
+            const q = bankSoal[currentQuestionIdx];
+            if (!q) return;
+            const isChecked = document.getElementById("checkbox-ragu").checked;
+            raguState[q.id] = isChecked;
+            saveExamSession();
+            renderQuestionGrid();
+        }
+
+        function navigateQuestion(step) {
+            const nextIdx = currentQuestionIdx + step;
+            if (nextIdx >= 0 && nextIdx < bankSoal.length) {
+                currentQuestionIdx = nextIdx;
+                renderQuestion(currentQuestionIdx);
+                renderQuestionGrid();
+            } else if (nextIdx >= bankSoal.length) {
+                confirmFinishExam();
+            }
+        }
+
+        function confirmFinishExam() {
+            let unanswered = 0;
+            bankSoal.forEach(q => {
+                if (!isQuestionAnswered(q.id)) unanswered++;
+            });
+
+            let msg = "Apakah Anda yakin ingin menyelesaikan ujian?";
+            if (unanswered > 0) {
+                msg = `Masih ada ${unanswered} soal yang belum dijawab!\nYakin ingin mengakhiri ujian sekarang?`;
+            }
+
+            if (confirm(msg)) {
+                finishExam();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(timerInterval);
+
+            // Hitung Skor
+            let totalCorrect = 0;
+            bankSoal.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (q.type === 'PG') {
+                    if (userAns === q.key) totalCorrect++;
+                } else if (q.type === 'MCMA') {
+                    if (Array.isArray(userAns)) {
+                        const sortedUser = [...userAns].sort();
+                        const sortedKey = [...q.key].sort();
+                        if (JSON.stringify(sortedUser) === JSON.stringify(sortedKey)) {
+                            totalCorrect++;
+                        }
+                    }
+                } else if (q.type === 'KATEGORI') {
+                    if (userAns && typeof userAns === 'object') {
+                        let allMatched = true;
+                        q.key.forEach((kVal, idx) => {
+                            if (userAns[idx] !== kVal) allMatched = false;
+                        });
+                        if (allMatched) totalCorrect++;
+                    }
+                }
+            });
+
+            const finalScore = Math.round((totalCorrect / bankSoal.length) * 100);
+
+            const resultObj = {
+                id: Date.now(),
+                nama: currentUser.nama,
+                nisn: currentUser.nisn,
+                kelas: currentUser.kelas,
+                score: finalScore,
+                correctCount: totalCorrect,
+                totalSoal: bankSoal.length,
+                timestamp: new Date().toLocaleString("id-ID")
+            };
+
+            // Simpan ke Rekap Guru
+            const existingRekap = JSON.parse(localStorage.getItem("tka_rekap_hasil") || "[]");
+            existingRekap.unshift(resultObj);
+            localStorage.setItem("tka_rekap_hasil", JSON.stringify(existingRekap));
+
+            // Clear Active Session
+            localStorage.removeItem("tka_active_session");
+
+            // Tampilkan UI Hasil
+            document.getElementById("siswa-exam-interface").classList.add("hidden");
+            document.getElementById("siswa-result-card").classList.remove("hidden");
+
+            document.getElementById("result-score").innerText = finalScore;
+            document.getElementById("result-correct").innerText = totalCorrect;
+            document.getElementById("result-total").innerText = bankSoal.length;
+
+            document.getElementById("res-nama").innerText = resultObj.nama;
+            document.getElementById("res-nisn").innerText = resultObj.nisn;
+            document.getElementById("res-kelas").innerText = resultObj.kelas;
+            document.getElementById("res-waktu").innerText = resultObj.timestamp;
+
+            renderGuruDashboard();
+        }
+
+        function restartExamSession() {
+            document.getElementById("siswa-result-card").classList.add("hidden");
+            document.getElementById("siswa-login-card").classList.remove("hidden");
+        }
+
+        // ==========================================
+        // 5. PORTAL GURU LOGIC
+        // ==========================================
+        function handleGuruAuth(e) {
+            e.preventDefault();
+            const pin = document.getElementById("input-pin").value;
+            if (pin === "baturetno123") {
+                document.getElementById("guru-auth-card").classList.add("hidden");
+                document.getElementById("guru-dashboard").classList.remove("hidden");
+                renderGuruDashboard();
+            } else {
+                alert("PIN Admin Salah! (Default: baturetno123)");
+            }
+        }
+
+        function switchGuruTab(tab) {
+            const btnHasil = document.getElementById("tab-btn-hasil");
+            const btnSoal = document.getElementById("tab-btn-soal");
+            const viewHasil = document.getElementById("guru-tab-hasil");
+            const viewSoal = document.getElementById("guru-tab-soal");
+
+            if (tab === 'hasil') {
+                btnHasil.className = "px-4 py-2 font-bold text-sm rounded-lg bg-blue-700 text-white shadow";
+                btnSoal.className = "px-4 py-2 font-bold text-sm rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300";
+                viewHasil.classList.remove("hidden");
+                viewSoal.classList.add("hidden");
+            } else {
+                btnSoal.className = "px-4 py-2 font-bold text-sm rounded-lg bg-blue-700 text-white shadow";
+                btnHasil.className = "px-4 py-2 font-bold text-sm rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300";
+                viewSoal.classList.remove("hidden");
+                viewHasil.classList.add("hidden");
+            }
+        }
+
+        function renderGuruDashboard() {
+            // Render Tabel Hasil
+            const tbody = document.getElementById("table-hasil-body");
+            tbody.innerHTML = "";
+            const rekap = JSON.parse(localStorage.getItem("tka_rekap_hasil") || "[]");
+
+            if (rekap.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Belum ada siswa yang menyelesaikan ujian.</td></tr>`;
+            } else {
+                rekap.forEach((item, idx) => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-slate-50 border-b border-slate-100";
+                    tr.innerHTML = `
+                        <td class="p-3 text-slate-500 font-medium">${idx + 1}</td>
+                        <td class="p-3 font-semibold text-slate-800">${item.nama}</td>
+                        <td class="p-3 text-slate-600">${item.nisn}</td>
+                        <td class="p-3 text-slate-600">${item.kelas}</td>
+                        <td class="p-3 text-xs text-slate-500">${item.timestamp}</td>
+                        <td class="p-3 text-center"><span class="px-2.5 py-1 rounded-full text-xs font-extrabold ${item.score >= 75 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${item.score}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Render Bank Soal Editor List
+            const bankList = document.getElementById("bank-soal-list");
+            bankList.innerHTML = "";
+
+            bankSoal.forEach((q, idx) => {
+                const card = document.createElement("div");
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2";
+                
+                let typeText = q.type === 'PG' ? 'Pilihan Ganda' : (q.type === 'MCMA' ? 'Pilihan Ganda Kompleks' : 'Kategori/Benar-Salah');
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded">No. ${idx + 1} - ${typeText}</span>
+                    </div>
+                    <div class="text-sm text-slate-800 font-medium">${q.question}</div>
+                `;
+                bankList.appendChild(card);
+            });
+        }
+
+        function exportHasilToCSV() {
+            const rekap = JSON.parse(localStorage.getItem("tka_rekap_hasil") || "[]");
+            if (rekap.length === 0) {
+                alert("Tidak ada data hasil untuk di-export!");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Siswa,NISN,Kelas,Waktu Selesai,Skor Akhir\n";
+            rekap.forEach((row, idx) => {
+                csvContent += `${idx + 1},"${row.nama}","${row.nisn}","${row.kelas}","${row.timestamp}",${row.score}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Hasil_TKA_Sejarah_SMAN1Baturetno_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearHasilSiswa() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data rekap nilai siswa? Data tidak dapat dikembalikan!")) {
+                localStorage.removeItem("tka_rekap_hasil");
+                renderGuruDashboard();
+            }
+        }
+
+        function resetBankSoalDefault() {
+            if (confirm("Reset bank soal ke default 20 nomor TKA Sejarah 2026?")) {
+                localStorage.setItem("tka_bank_soal", JSON.stringify(DEFAULT_BANK_SOAL));
+                initBankSoal();
+                renderGuruDashboard();
+                alert("Bank soal telah dikembalikan ke standar default!");
+            }
+        }
+    </script>
+</body>
+</html>
